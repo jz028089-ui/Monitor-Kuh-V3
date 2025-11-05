@@ -28,6 +28,18 @@ jobs:
         run: |
           pip install buildozer kivy
 
+      - name: Prepare Android SDK (accept licenses + tools)
+        run: |
+          mkdir -p ~/.buildozer/android/platform
+          export ANDROID_HOME=$HOME/.buildozer/android/platform/android-sdk
+          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+          mkdir -p $ANDROID_HOME/cmdline-tools/latest
+          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdtools.zip
+          unzip cmdtools.zip -d $ANDROID_HOME/cmdline-tools/latest
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
+              "platforms;android-33" "build-tools;33.0.2" "platform-tools"
+
       - name: Build APK
         run: |
           export PATH=$PATH:~/.local/bin
