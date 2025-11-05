@@ -1,4 +1,5 @@
-name: Build Android APK
+- name: Upload APK artifact
+  uses: actions/upload-artifact@v3
 
 on:
   push:
